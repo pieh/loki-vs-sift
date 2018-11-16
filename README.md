@@ -13,5 +13,5 @@
 
 After running `build-query-results.js`, run `compare-query-results.js` in your site - it will:
  - extract `jsonDataPaths` from `_states/loki.json` and `_states/redux.json` to compare if query results are different between those engines
- - display table with differences
+ - display table with paths for which query results differs
  - copy query results that are different to `_states/queries_loki`/`_states/queries_redux` so it's easier to inspect differences
