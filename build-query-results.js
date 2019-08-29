@@ -3,10 +3,10 @@ const path = require(`path`)
 const { execSync } = require(`child_process`)
 
 const stateCopiesDir = path.join(process.cwd(), `_states`)
-const reduxStatePath = path.join(process.cwd(), `.cache`, `redux-state.json`)
+const reduxStatePath = path.join(process.cwd(), `.cache`, `redux.state`)
 
 const grabResults = str => {
-  const runGraphqlQueriesMatches = /run graphql queries[—-\s]*([\d.]+)\D+(\d+)[/]\d+\s([\d.]+)/g.exec(
+  const runGraphqlQueriesMatches = /run page queries[—-\s]*([\d.]+)\D+(\d+)[/]\d+\s([\d.]+)/g.exec(
     str
   )
   const doneBuildingMatches = /Done building in [—-\s]*([\d.]+)/g.exec(str)
@@ -35,7 +35,7 @@ const outputLoki = execSync(cmd, {
 })
 console.log(outputLoki)
 
-fs.copyFileSync(reduxStatePath, path.join(stateCopiesDir, `loki.json`))
+fs.copyFileSync(reduxStatePath, path.join(stateCopiesDir, `loki.state`))
 
 const resultsLoki = grabResults(outputLoki)
 /* --- END LOKI --- */
@@ -53,7 +53,7 @@ console.log(outputRedux)
 
 const resultsRedux = grabResults(outputRedux)
 
-fs.copyFileSync(reduxStatePath, path.join(stateCopiesDir, `redux.json`))
+fs.copyFileSync(reduxStatePath, path.join(stateCopiesDir, `redux.state`))
 /* --- END REDUX --- */
 
 console.table({ redux: resultsRedux, loki: resultsLoki })
