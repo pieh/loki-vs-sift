@@ -1,15 +1,19 @@
 const fs = require(`fs-extra`)
 const path = require(`path`)
+const v8 = require('v8');
 const _ = require(`lodash`)
 
 const stateCopiesDir = path.join(process.cwd(), `_states`)
-const queryResultsDir = path.join(process.cwd(), `public`, `static`, `d`)
+const queryResultsDir = path.join(process.cwd(), `public`, `static`, `d`);
 
-const redux = JSON.parse(
-  fs.readFileSync(path.join(stateCopiesDir, `redux.json`))
-).jsonDataPaths
-const loki = JSON.parse(fs.readFileSync(path.join(stateCopiesDir, `loki.json`)))
-  .jsonDataPaths
+const readStateFile = (file) => {
+  const data = fs.readFileSync(file)
+  return v8.deserialize(data)
+}
+
+const redux = readStateFile(path.join(stateCopiesDir, `redux.state`)).staticQueryComponents
+const loki = readStateFile(path.join(stateCopiesDir, `loki.state`)).staticQueryComponents
+
 
 const uniqueKeys = _.uniq(_.keys(redux).concat(_.keys(loki)))
 
